@@ -20,7 +20,7 @@ public class MainClass {
             URL url = new URL("https://yande.re/post.json?tags=azur_lane;limit=100");
             Picture[] pics = mapper.readValue(url, Picture[].class);
             Predicate<Picture> byRating = picture -> picture.getRating() != 'e';
-            pics = Arrays.stream(pics).filter(byRating).limit(1).toArray(Picture[]::new);
+            pics = Arrays.stream(pics).filter(byRating).limit(50).toArray(Picture[]::new);
             new File(Paths.get(".").toAbsolutePath().normalize().toString() + "/pics").mkdirs();
             for (Picture p : pics) {
                 System.out.println(Picture.namebuilder(p));
