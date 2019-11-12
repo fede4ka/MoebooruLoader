@@ -23,8 +23,6 @@ public class MainClass {
             pics = Arrays.stream(pics).filter(byRating).limit(50).toArray(Picture[]::new);
             new File(Paths.get(".").toAbsolutePath().normalize().toString() + "/pics").mkdirs();
             for (Picture p : pics) {
-                System.out.println(Picture.namebuilder(p));
-                System.out.println(p.getRating());
                 URL picurl = new URL(p.getJpeg_url());
                 try (
                         ReadableByteChannel rbc = Channels.newChannel(picurl.openStream());

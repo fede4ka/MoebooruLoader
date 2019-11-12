@@ -1,3 +1,9 @@
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+
 public class Picture {
     public int id;
     public String tags;
@@ -27,7 +33,23 @@ public class Picture {
             }
             tags = tagsshort.toString();
         }
-        return "yande.re" + " " + pic.getId() + " " + tags.replaceAll("[/|.|\\|]+", "_");
+        return "yande.re" + " " + pic.getId() + " " + tags.replaceAll("[/|.|\\|?]", "_");
+    }
+
+    public static void downloadpicture(Picture p) {
+        try {
+            URL picurl = new URL(p.getJpeg_url());
+            try (
+                    ReadableByteChannel rbc = Channels.newChannel(picurl.openStream());
+                    FileOutputStream fos = new FileOutputStream("pics/" + Picture.namebuilder(p) + ".jpeg")
+            ) {
+                fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public int getId() {
