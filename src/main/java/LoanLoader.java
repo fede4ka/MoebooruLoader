@@ -12,14 +12,23 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 class LoanLoader {
-        private int number;
-        private String tags;
-        private LoanLoader() {};
+    private int number = 50;
+    private String tags = "azur_lane";
 
-        LoanLoader tags(final String tags) { this.tags = tags;return this; };
-        LoanLoader number(final Integer number){ this.number = number; return this; };
+    private LoanLoader() {
+    }
 
-        static  void StartLoading(final Consumer<LoanLoader> block) {
+    LoanLoader tags(final String tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    LoanLoader number(final Integer number) {
+        this.number = number;
+        return this;
+    }
+
+    static void StartLoading(final Consumer<LoanLoader> block) {
         final LoanLoader loader = new LoanLoader();
         block.accept(loader);
 
@@ -28,10 +37,10 @@ class LoanLoader {
         ExecutorService service = Executors.newFixedThreadPool(3);
 
         try {
-            URL url = new URL("https://yande.re/post.json?tags="+loader.tags+";limit="+loader.number);
+            URL url = new URL("https://yande.re/post.json?tags=" + (loader.tags) + ";limit=" + (loader.number * 2));
             Picture[] pics = mapper.readValue(url, Picture[].class);
             Predicate<Picture> byRating = picture -> picture.getRating() != 'e';
-            pics = Arrays.stream(pics).filter(byRating).limit(50).toArray(Picture[]::new);
+            pics = Arrays.stream(pics).filter(byRating).limit(loader.number).toArray(Picture[]::new);
             new File(Paths.get(".").toAbsolutePath().normalize().toString() + "/pics").mkdirs();
             for (Picture p : pics) {
                 Runnable DlTask = () -> Picture.downloadpicture(p);
