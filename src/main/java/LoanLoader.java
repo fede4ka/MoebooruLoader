@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 
 class LoanLoader {
     private int number = 50;
-    private String tags = "azur_lane";
+    private String tags = "";
 
     private LoanLoader() {
     }
