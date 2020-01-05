@@ -27,7 +27,6 @@ public class ProxyLoader{
     private  Proxy proxy = new Proxy(Proxy.Type.HTTP,
             new InetSocketAddress("proxy-nossl.antizapret.prostovpn.org", 29976));
 
-
     private ProxyLoader() {
     }
     ProxyLoader apiurl(final String apiurl) {
@@ -48,7 +47,6 @@ public class ProxyLoader{
         this.number = number;
         return this;
     }
-
 
     static void StartLoading(final Consumer<ProxyLoader> block) {
         final ProxyLoader loader = new ProxyLoader();

@@ -7,7 +7,7 @@ public class MCP {
         ProxyLoader.StartLoading(Loader ->
                 Loader.apiurl("https://yande.re/post.json?tags=")
                        .tags("azur_lane")
-                        .number(3)
+                        .number(50)
                         .proxy(new Proxy(Proxy.Type.HTTP,
                                          new InetSocketAddress("proxy-nossl.antizapret.prostovpn.org",
                                                                 29976))));
