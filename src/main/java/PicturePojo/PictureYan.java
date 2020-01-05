@@ -1,27 +1,29 @@
+package PicturePojo;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
-public class Picture {
+public class PictureYan {
     public int id;
     public String tags;
     public String jpeg_url;
     public char rating;
 
-    public Picture(int id, String tags, String jpeg_url, char rating) {
+    public PictureYan(int id, String tags, String jpeg_url, char rating) {
         this.id = id;
         this.tags = tags;
         this.jpeg_url = jpeg_url;
         this.rating = rating;
     }
 
-    public Picture() {
+    public PictureYan() {
         super();
     }
 
-    public static String namebuilder(Picture pic) {
+    public static String namebuilder(PictureYan pic) {
 
         String tags = pic.getTags();
         String[] arr;
@@ -36,12 +38,12 @@ public class Picture {
         return "yande.re" + " " + pic.getId() + " " + tags.replaceAll("[/|.|\\|?]", "_");
     }
 
-    public static void downloadpicture(Picture p) {
+    public static void downloadpicture(PictureYan p) {
         try {
             URL picurl = new URL(p.getJpeg_url());
             try (
                     ReadableByteChannel rbc = Channels.newChannel(picurl.openStream());
-                    FileOutputStream fos = new FileOutputStream("pics/" + Picture.namebuilder(p) + ".jpeg")
+                    FileOutputStream fos = new FileOutputStream("pics/" + PictureYan.namebuilder(p) + ".jpeg")
             ) {
                 fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
             }
