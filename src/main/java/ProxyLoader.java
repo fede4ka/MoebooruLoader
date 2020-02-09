@@ -27,8 +27,7 @@ public class ProxyLoader{
     private  Proxy proxy = new Proxy(Proxy.Type.HTTP,
             new InetSocketAddress("proxy-nossl.antizapret.prostovpn.org", 29976));
 
-    private ProxyLoader() {
-    }
+    private ProxyLoader() {}
     ProxyLoader apiurl(final String apiurl) {
         this.apiurl = apiurl;
         return this;
@@ -57,14 +56,12 @@ public class ProxyLoader{
         ExecutorService service = Executors.newFixedThreadPool(3);
 
         try {
-            URL url = new URL(loader.apiurl + (loader.tags) + ";limit=" + (loader.number * 2));
+            URL url = new URL(loader.apiurl + (loader.tags) + ";limit=" + (loader.number * 3));
             PictureYan[] pics = mapper.readValue(url, PictureYan[].class);
             Predicate<PictureYan> byRating = picture -> picture.getRating() != 'e';
             pics = Arrays.stream(pics).filter(byRating).limit(loader.number).toArray(PictureYan[]::new);
             new File(Paths.get(".").toAbsolutePath().normalize().toString() + "/pics").mkdirs();
             for (PictureYan p : pics) {
-                //Runnable DlTask = () -> Picture.downloadpicture(p);
-
                 Runnable DlTask = () -> {
                     try {
                     URL picurl = new URL(p.getJpeg_url());
@@ -72,11 +69,10 @@ public class ProxyLoader{
                     InputStream stream = conn.getInputStream();
                     Path copied = Paths.get("pics/" + PictureYan.namebuilder(p) + ".jpeg");
                     Files.copy(stream, copied, StandardCopyOption.REPLACE_EXISTING);
-                    }catch (IOException e) {
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    };
-
+                };
                 service.submit(DlTask);
             }
         } catch (IOException e) {
