@@ -17,6 +17,9 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 public class YanAPI implements API {
+    static  Proxy proxy = new Proxy(Proxy.Type.HTTP,
+            new InetSocketAddress("proxy-nossl.antizapret.prostovpn.org",
+                    29976));
     public YanAPI() { }
     public String getapiurl () {
         return "https://yande.re/post.json?tags=";}
@@ -44,8 +47,7 @@ public PictureYan[] getlastpics (URL url) throws IOException {
 public void downloadTask  (IPicture p) {
     try {
         URL picurl = new URL(p.getJpeg_url());
-        HttpURLConnection conn = (HttpURLConnection) picurl.openConnection(new Proxy(Proxy.Type.HTTP,
-                new InetSocketAddress("proxy-nossl.antizapret.prostovpn.org", 29976)));
+        HttpURLConnection conn = (HttpURLConnection) picurl.openConnection(proxy);
         InputStream stream = conn.getInputStream();
         Path copied = Paths.get("pics/" + YanAPI.namebuilder((PictureYan) p) + ".jpeg");
         Files.copy(stream, copied, StandardCopyOption.REPLACE_EXISTING);

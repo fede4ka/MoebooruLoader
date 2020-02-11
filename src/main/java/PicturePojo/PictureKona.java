@@ -6,7 +6,7 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
-public class PictureKona {
+public class PictureKona implements IPicture {
     public int id;
     public String tags;
     public String jpeg_url;
