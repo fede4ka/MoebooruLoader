@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class LoaderKona1080 {
     private API api ;
@@ -29,9 +30,10 @@ public class LoaderKona1080 {
         block.accept(loader);
         ExecutorService service = Executors.newFixedThreadPool(3);
         try {
-            String url =  loader.api.getapiurl() + ";limit=" + (loader.number);
+            String url =  loader.api.getapiurl() + ";limit=" + (loader.number *3);
+            Predicate<IPicture> byRating = picture -> picture.getRating() != 'e';
             IPicture[] pics = loader.api.getlastpics(url);
-            IPicture[] filteredpics = Arrays.stream(pics).limit(loader.number).toArray(IPicture[]::new);
+            IPicture[] filteredpics = Arrays.stream(pics).filter(byRating).limit(loader.number).skip(15).toArray(IPicture[]::new);
             new File(Paths.get(".").toAbsolutePath().normalize().toString() + "/pics").mkdirs();
             for (IPicture picture : filteredpics) {
                 Runnable DlTask = () -> { loader.api.downloadTask(picture) ;
