@@ -38,7 +38,7 @@ public class Loader {
         try {
             String url =  loader.api.getapiurl() + (loader.tags) + ";limit=" + (loader.number * 3);
             IPicture[] pics = loader.api.getlastpics(url);
-            Predicate<IPicture> byRating = picture -> picture.getRating() != 'e';
+            Predicate<IPicture> byRating = picture -> picture.getRating() == 's';
             IPicture[] filteredpics = Arrays.stream(pics).filter(byRating).limit(loader.number).toArray(IPicture[]::new);
             new File(Paths.get(".").toAbsolutePath().normalize().toString() + "/pics").mkdirs();
             for (IPicture picture : filteredpics) {

@@ -36,7 +36,7 @@ public class KonaAPI1080 implements API {
             }
             tags = tagsshort.toString();
         }
-        return "konachan.com" + " " + pic.getId() + " " + tags.replaceAll("[/|.|\\|?]", "_");
+        return "Konachan.com" + " " + pic.getId() + " " + tags.replaceAll("[/|.|\\|?]", "_");
     }
 
     public PictureKona[] getlastpics (String url) throws IOException {

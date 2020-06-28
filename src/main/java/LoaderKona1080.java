@@ -31,9 +31,9 @@ public class LoaderKona1080 {
         ExecutorService service = Executors.newFixedThreadPool(3);
         try {
             String url =  loader.api.getapiurl() + ";limit=" + (loader.number *3);
-            Predicate<IPicture> byRating = picture -> picture.getRating() != 'e';
+            Predicate<IPicture> byRating = picture -> picture.getRating() == 's';
             IPicture[] pics = loader.api.getlastpics(url);
-            IPicture[] filteredpics = Arrays.stream(pics).filter(byRating).limit(loader.number).skip(15).toArray(IPicture[]::new);
+            IPicture[] filteredpics = Arrays.stream(pics).filter(byRating).skip(15).limit(loader.number).toArray(IPicture[]::new);
             new File(Paths.get(".").toAbsolutePath().normalize().toString() + "/pics").mkdirs();
             for (IPicture picture : filteredpics) {
                 Runnable DlTask = () -> { loader.api.downloadTask(picture) ;
