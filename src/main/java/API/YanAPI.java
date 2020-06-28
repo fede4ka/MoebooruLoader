@@ -38,10 +38,15 @@ public class YanAPI implements API {
         return "yande.re" + " " + pic.getId() + " " + tags.replaceAll("[/|.|\\|?]", "_");
     }
 
-public PictureYan[] getlastpics (URL url) throws IOException {
-    ObjectMapper mapper = new ObjectMapper()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    return mapper.readValue(url, PictureYan[].class);
+public PictureYan[] getlastpics (String url) throws IOException {
+    ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection(proxy);
+    connection.connect();
+    InputStream in = connection.getInputStream();
+    return mapper.readValue(in, PictureYan[].class);
+    //ObjectMapper mapper = new ObjectMapper()
+           // .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    //return mapper.readValue(url, PictureYan[].class);
 }
 
 public void downloadTask  (IPicture p) {

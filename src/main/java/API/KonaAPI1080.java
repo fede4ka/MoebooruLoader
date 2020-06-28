@@ -1,8 +1,7 @@
 package API;
 
 import PicturePojo.IPicture;
-import PicturePojo.PictureDanbooru;
-import PicturePojo.PictureYan;
+import PicturePojo.PictureKona;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -17,17 +16,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-public class DanbooruAPI implements API {
-
-    static  Proxy proxy = new Proxy(Proxy.Type.HTTP,
+public class KonaAPI1080 implements API {
+    static Proxy proxy = new Proxy(Proxy.Type.HTTP,
             new InetSocketAddress("proxy-nossl.antizapret.prostovpn.org",
                     29976));
+    public KonaAPI1080() {
+        System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,SSLv3");
+    }
+    public String getapiurl () { return "https://konachan.net/post.json?tags=width%3A1920..+height%3A1080..";}
 
-    public DanbooruAPI() { }
-    public String getapiurl () {
-        return "https://danbooru.donmai.us/posts.json?tags=";}
-
-    public static String namebuilder(PictureDanbooru pic) {
+    public static String namebuilder(PictureKona pic) {
         String tags = pic.getTags();
         String[] arr;
         if (tags.length() > 150) {
@@ -38,17 +36,14 @@ public class DanbooruAPI implements API {
             }
             tags = tagsshort.toString();
         }
-        return "danbooru" + " " + pic.getId() + " " + tags.replaceAll("[/|.|\\|?]", "_");
+        return "konachan.com" + " " + pic.getId() + " " + tags.replaceAll("[/|.|\\|?]", "_");
     }
 
-    public PictureDanbooru[] getlastpics (String url) throws IOException {
-        //System.setProperty("https.protocols", "TLSv1.2,TLSv1.1,SSLv3");
-        ObjectMapper mapper = new ObjectMapper();
+    public PictureKona[] getlastpics (String url) throws IOException {
+        ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection(proxy);
-        connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0 ");
-        //connection.connect();
         InputStream picsJson = connection.getInputStream();
-       return mapper.readValue(picsJson, PictureDanbooru[].class);
+        return mapper.readValue(picsJson, PictureKona[].class);
     }
 
     public void downloadTask  (IPicture p) {
@@ -56,7 +51,7 @@ public class DanbooruAPI implements API {
             URL picurl = new URL(p.getJpeg_url());
             HttpURLConnection conn = (HttpURLConnection) picurl.openConnection(proxy);
             InputStream stream = conn.getInputStream();
-            Path copied = Paths.get("pics/" + DanbooruAPI.namebuilder((PictureDanbooru) p) + ((PictureDanbooru) p).getFile_ext());
+            Path copied = Paths.get("pics/" + KonaAPI1080.namebuilder((PictureKona) p) + ".jpeg");
             Files.copy(stream, copied, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             e.printStackTrace();

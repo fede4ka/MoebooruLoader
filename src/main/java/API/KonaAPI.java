@@ -41,9 +41,9 @@ public class KonaAPI implements API {
         return "konachan.com" + " " + pic.getId() + " " + tags.replaceAll("[/|.|\\|?]", "_");
     }
 
-    public PictureKona[] getlastpics (URL url) throws IOException {
+    public PictureKona[] getlastpics (String url) throws IOException {
         ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection(proxy);
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection(proxy);
         InputStream picsJson = connection.getInputStream();
         return mapper.readValue(picsJson, PictureKona[].class);
     }

@@ -1,10 +1,12 @@
+import API.DanbooruAPI;
+import API.KonaAPI;
+import API.KonaAPI1080;
 import API.YanAPI;
 
 public class MC {
     public static void main(String[] args) {
-        Loader.StartLoading(Loader ->
-                Loader.api(new YanAPI())
-                        .tags("tag")
-                        .number(50));
+        LoaderKona1080.StartLoading(Loader ->
+                Loader.api(new KonaAPI1080())
+                        .number(150));
     }
 }
